@@ -6,7 +6,7 @@ import { generateToken } from "../../utils/jwt";
 const cookieOptions = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  sameSite: "lax" as const,
+  sameSite: process.env.NODE_ENV === "production" ? ("none" as const) : ("lax" as const),
   maxAge: 24 * 60 * 60 * 1000,
   path: "/"
 };
@@ -107,7 +107,7 @@ export const getMe = async (req: Request, res: Response) => {
       res.clearCookie("token", {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
         path: "/"
       });
 
@@ -136,7 +136,7 @@ export const logout = (req: Request, res: Response) => {
   res.clearCookie("token", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     path: "/"
   });
 
